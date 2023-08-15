@@ -25,33 +25,43 @@ The project's workflow is outlined below, encompassing new information as well:
 
 <h2> Project Structure <h4>
 
-The Paper to Code repository showcases two pivotal folders:
+This repository has two folders that show different applications of this project:
 
-'cyclical-learning-rates': This directory highlights the application of the "Cyclical Learning Rates" approach to a TensorFlow-based machine learning model targeting the MNIST dataset.
+[cyclical-learning-rates](cyclical-learning-rates): Within this folder, the "Cyclical Learning Rates" approach is applied to a TensorFlow-based model trained on the MNIST dataset.
 
-'layer-normalization': Within this folder, the "Layer Normalization" approach is applied to a similar TensorFlow-based model trained on the MNIST dataset.
+[layer-normalization](layer-normalization): Within this folder, the "Layer Normalization" approach is applied to a similar TensorFlow-based model trained on the MNIST dataset.
 
 Both folders contain files called 'mnist_code.py', which have the complete code to load the MNIST dataset and train a small model. Notably, these two codes differ slightly, a strategic decision to expedite the incorporation of the respective approaches.
 
 
 <h2> Getting Started <h4>
 
-To integrate a paper approach into your python project, follow these steps:
+To integrate a paper approach into your python project, use the following codebase:
 
-Supply your OpenAI API key;
+    import openai
+    import paper_to_code as ptc
 
-Provide the URL of the relevant research paper;
-
-Specify the target Python file;
-
-Just wait for the file to be generated.
+    # Add your openai key
+    openai.api_key = ""
+    
+    # Add URL to target paper
+    pdf_url = ""
+    
+    # Add original file directory
+    target_file = ""
+    
+    # Add final file name
+    final_name = ""
+    
+    # Call the function to generate and save the updated code
+    ptc.generate_updated_code(pdf_url, target_file, final_name)
 
 Note: AI understanding is reinforced by well-documented code, facilitating effective decision-making during onboarding. Not only that, it is important to note that this project uses articles that propose simple concepts, as complex mathematical content or computer vision-oriented content can be difficult for AI to understand.
 
 
 <h2> GPT Model Insights <h4>
 
-Both GPT-3.5 and GPT-4 produce similar results, but GPT-3.5 is the more cost-effective choice. Each generated code costs less than a quarter of a dollar and is produced in less than 4 minutes. To save money, a free alternative would be to use the prompts from the paper_to_code.py file in ChatGPT. However, this method requires manual intervention and is not automatic.
+Both GPT-3.5 and GPT-4 produce similar results, but GPT-3.5 is the more cost-effective choice. Each generated code costs less than a quarter of a dollar and is produced in less than 4 minutes. To save money, a free alternative would be to use the prompts from the [paper_to_code.py](paper_to_code.py) file in ChatGPT. However, this method requires manual intervention and is not automatic.
 
 
 <h2> Error Considerations <h4>
