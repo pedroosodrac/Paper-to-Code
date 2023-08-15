@@ -1,5 +1,5 @@
 import openai
-import article_to_code as atc
+import paper_to_code as ptc
 
 # Read and set the OpenAI API key
 with open("../openai_key.txt", "r") as f:
@@ -15,4 +15,4 @@ target_file = "mnist_code.py"
 final_name = "updated_mnist_code.py"
 
 # Call the function to generate and save the updated code
-atc.generate_updated_code(pdf_url, target_file, final_name, start_marker="2 Background", end_marker="6 Experimental results")
+ptc.generate_updated_code(pdf_url, target_file, final_name, start_marker="2 Background", end_marker="6 Experimental results")

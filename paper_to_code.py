@@ -6,7 +6,7 @@ from io import BytesIO
 from tqdm import tqdm
 
 
-base_article_prompt = "Rewrite the presented approach with correct, academic grammar. Write as much of each proposed detail as possible and how to apply it. Technical and mathematical details are crucial. The generated text needs to be expository and informative. Do not remove important information. Remain unbiased, without critical or opinionated comments. Your text needs to expose the idea, explain it technically and every detail about how it works. The advantages of the approach don't matter, only how you apply it matters."
+base_paper_prompt = "Rewrite the presented approach with correct, academic grammar. Write as much of each proposed detail as possible and how to apply it. Technical and mathematical details are crucial. The generated text needs to be expository and informative. Do not remove important information. Remain unbiased, without critical or opinionated comments. Your text needs to expose the idea, explain it technically and every detail about how it works. The advantages of the approach don't matter, only how you apply it matters."
 base_code_prompt = "Below is the text of an approach described in detail, as well as the code that needs that approach applied to it. This approach can be applied to code and accurately describes how this can be done. First, write how you will apply the approach in a nutshell. Then rewrite the code adding and changing as needed to include all the specifics of the approach. Not only, add parameters in the functions so that they are flexible. Don't describe how to apply the approach, just write the code. Ensures you are only using declared variables. The most important thing is to ensure that all the code is written, with no incomplete or missing parts."
 
 
@@ -184,10 +184,10 @@ def generate_updated_code(pdf_url: str, target_file: str, final_name: str,
                           max_tokens: int = 4096, top_p: float = 0, frequency_penalty: float = 0,
                           presence_penalty: float = 0) -> str:
     """
-    Generates and writes updated code based on a PDF article and existing code.
+    Generates and writes updated code based on a PDF paper and existing code.
 
     Args:
-        pdf_url (str): URL of the PDF article.
+        pdf_url (str): URL of the PDF paper.
         target_file (str): Path to the target code file.
         final_name (str): Path to the final updated code file.
         start_marker (str, optional): The starting marker for text extraction. Defaults to "abstract".
@@ -216,17 +216,17 @@ def generate_updated_code(pdf_url: str, target_file: str, final_name: str,
     cleaned_text = clean_non_alphabetic_items(extracted_text)
 
     # Replace URLs with a placeholder ("link") in the text
-    article_text = replace_urls_with_placeholder(cleaned_text)
+    paper_text = replace_urls_with_placeholder(cleaned_text)
 
-    # Create the prompt for the article generation
-    article_prompt = f"{base_article_prompt}\n\n{article_text}"
+    # Create the prompt for the paper generation
+    paper_prompt = f"{base_paper_prompt}\n\n{paper_text}"
 
     # Initialize the GPTTextGenerator with provided parameters
     model = GPTTextGenerator(gpt_model=gpt_model, temperature=temperature, max_tokens=max_tokens,
                              top_p=top_p, frequency_penalty=frequency_penalty, presence_penalty=presence_penalty)
 
-    # Generate the rewritten approach text for the article
-    approach_text = model.generate(article_prompt).replace("\n", " ")
+    # Generate the rewritten approach text for the paper
+    approach_text = model.generate(paper_prompt).replace("\n", " ")
 
     # Open and read the code of the target file
     with open(target_file, "r") as f:
