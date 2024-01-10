@@ -2,16 +2,18 @@ import re
 import openai
 import PyPDF2
 import requests
-from io import BytesIO
 from tqdm import tqdm
+from io import BytesIO
 
 
+# Prompts
+system_prompt = "You are a useful helper. You specialize in natural language processing, programming, and troubleshooting. You know how important the jobs you participate in are, and you dedicate yourself to being a perfectionist and attentive to detail."
 base_paper_prompt = "Rewrite the presented approach with correct, academic grammar. Write as much of each proposed detail as possible and how to apply it. Technical and mathematical details are crucial. The generated text needs to be expository and informative. Do not remove important information. Remain unbiased, without critical or opinionated comments. Your text needs to expose the idea, explain it technically and every detail about how it works. The advantages of the approach don't matter, only how you apply it matters."
 base_code_prompt = "Below is the text of an approach described in detail, as well as the code that needs that approach applied to it. This approach can be applied to code and accurately describes how this can be done. First, write how you will apply the approach in a nutshell. Then rewrite the code adding and changing as needed to include all the specifics of the approach. Not only, add parameters in the functions so that they are flexible. Don't describe how to apply the approach, just write the code. Ensures you are only using declared variables. The most important thing is to ensure that all the code is written, with no incomplete or missing parts."
 
 
 class GPTTextGenerator:
-    def __init__(self, gpt_model: str = "gpt-3.5-turbo-16k", temperature: float = 0, max_tokens: int = 256,
+    def __init__(self, gpt_model: str = "gpt-3.5-turbo-16k", temperature: float = 0, max_tokens: int = 4096,
                  top_p: float = 0, frequency_penalty: float = 0, presence_penalty: float = 0):
         """
         Initializes the GPTTextGenerator class.
@@ -42,17 +44,15 @@ class GPTTextGenerator:
             str: Generated response or empty string on error.
         """
         try:
-            response = openai.ChatCompletion.create(
+            # Import the OpenAI library and initialize the client
+            client = openai.OpenAI()
+
+            #
+            response = client.chat.completions.create(
                 model=self.gpt_model,
                 messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a useful helper. You specialize in natural language processing, programming, and troubleshooting. You know how important the jobs you participate in are, and you dedicate yourself to being a perfectionist and attentive to detail."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
+                    { "role": "system", "content": system_prompt},
+                    { "role": "user", "content": prompt}
                 ],
                 temperature=self.temperature,
                 max_tokens=self.max_tokens,
@@ -100,11 +100,10 @@ def extract_and_filter_text(text: str, start_marker: str = "abstract", end_marke
 
     Args:
         text (str): The input text.
-        start_marker (str, optional): The marker indicating the beginning of the text to extract. Defaults to "abstract".
+        start_marker (str, optional): From where the text should be extracted. Defaults to "abstract".
         end_marker (str, optional): The marker indicating the end of the text to extract. Defaults to "references".
         apply_filter (bool, optional): Whether to apply alphabetic line filtering. Defaults to False.
-        min_chars (int, optional): The minimum number of alphabetic characters required per line for filtering.
-                                  Defaults to 2.
+        min_chars (int, optional): Number of alphabetic characters required per line for filtering. Defaults to 2.
 
     Returns:
         str: The text extracted between the specified markers, optionally filtered based on the conditions.

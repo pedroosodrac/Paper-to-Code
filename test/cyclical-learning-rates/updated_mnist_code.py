@@ -1,6 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
+
 # Define the model class for MNIST classification
 class MNISTModel(tf.keras.Model):
     def __init__(self):
@@ -8,11 +9,12 @@ class MNISTModel(tf.keras.Model):
         self.flatten = tf.keras.layers.Flatten()
         self.dense1 = tf.keras.layers.Dense(64, activation='relu')
         self.dense2 = tf.keras.layers.Dense(10, activation='softmax')
-    
+
     def call(self, inputs):
         x = self.flatten(inputs)
         x = self.dense1(x)
         return self.dense2(x)
+
 
 # Define a learning rate schedule using LearningRateScheduler
 def lr_schedule(epoch, min_lr, max_lr, cycle_length):
@@ -20,6 +22,7 @@ def lr_schedule(epoch, min_lr, max_lr, cycle_length):
     x = abs(epoch / cycle_length - 2 * cycle + 1)
     lr = min_lr + (max_lr - min_lr) * max(0, 1 - x)
     return lr
+
 
 # Define optimizer, loss, and metrics for model compilation
 optimizer = tf.keras.optimizers.Adam()
@@ -67,7 +70,8 @@ plt.plot(lr_values, label='Learning Rate', linestyle='dashed')
 plt.plot([history[i].history['sparse_categorical_accuracy'][-1] for i in range(epochs)], label='Training Accuracy')
 
 # Plot the validation accuracy curve
-plt.plot([history[i].history['val_sparse_categorical_accuracy'][-1] for i in range(epochs)], label='Validation Accuracy')
+plt.plot([history[i].history['val_sparse_categorical_accuracy'][-1] for i in range(epochs)],
+         label='Validation Accuracy')
 
 # Set labels and title for the plot
 plt.xlabel('Epoch')

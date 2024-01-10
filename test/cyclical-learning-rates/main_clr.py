@@ -1,9 +1,8 @@
-import openai
+from dotenv import load_dotenv
 from src import paper_to_code as ptc
 
-# Read and set the OpenAI API key
-with open("../../openai_key.txt", "r") as f:
-    openai.api_key = f.read()
+# Load environment variables from the .env file
+load_dotenv()
 
 # URL to Cyclical Learning Rates paper
 pdf_url = 'https://arxiv.org/pdf/1506.01186.pdf'
